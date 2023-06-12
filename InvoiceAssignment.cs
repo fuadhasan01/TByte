@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+
 
 namespace InvoiceAssignment
 {
@@ -98,7 +100,7 @@ namespace InvoiceAssignment
 
             // Console.WriteLine();
 
-            Console.WriteLine("Are you sure to buy these products? (yes/no): ");
+            Console.Write("Are you sure to buy these products? (yes/no): ");
             string buyEnsure = Console.ReadLine();
             Console.WriteLine();
 
@@ -111,14 +113,46 @@ namespace InvoiceAssignment
                 string email = Console.ReadLine();
                 System.Console.Write("Enter your address: ");
                 string address = Console.ReadLine();
-                System.Console.Write("Enter your date of birth:(d-m-y) ");
-                string dob = Console.ReadLine();
+                System.Console.Write("Enter your date of birth:(d-m-y): ");
+                
+                DateTime birthDate;
+                bool validDate = DateTime.TryParseExact(Console.ReadLine(), "d-M-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out birthDate);
+                
+                while (!validDate)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("Invalid date of birth format. ");
+                    Console.ResetColor();
+                    System.Console.Write("Enter valid format of your date of birth:(d-m-y): ");
+                    validDate = DateTime.TryParseExact(Console.ReadLine(), "d-M-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out birthDate);
+                }
+                
+                    DateTime currentDate = DateTime.Now;
+                    int age = currentDate.Year - birthDate.Year;
+                    // Check if the birthday hasn't occurred yet this year
+                    if (currentDate.Month < birthDate.Month || (currentDate.Month == birthDate.Month && currentDate.Day < birthDate.Day))
+                    {
+                        age--;
+                    }
+                    // Check the user's age
+                    if (age < 12)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("You are not allowed to purchase our products. Minimum age requirement is 12 years old.");
+                        Console.ResetColor();
+                
+                        // Exit the application or perform any necessary actions
+                        Environment.Exit(0);
+                    }
+                
+                
+                
                 Console.WriteLine();
                 System.Console.WriteLine("---------------- Here is your Invoice ----------------");
                 System.Console.WriteLine("*************** User Information: *****************");
                 System.Console.WriteLine($"Name: {firstName} {lastName} {new string(' ', 7)} Email: {email}");
 
-                System.Console.WriteLine($"Address: {address} {new string(' ', 7)} Date of Birth: {dob}");
+                System.Console.WriteLine($"Address: {address} {new string(' ', 7)} Date of Birth: {birthDate.Date}-{birthDate.Month}-{birthDate.Year}");
 
                 System.Console.WriteLine("*************** Total amount *****************");
                 double totalAmount = 0;
