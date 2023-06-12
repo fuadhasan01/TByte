@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace InvoiceAssignment
@@ -15,18 +15,18 @@ namespace InvoiceAssignment
             // **************** CREATING PRODUCT CLASS ARRAY ***************
 
             Product[] products = new Product[6];
-            products[0] = new Product("Iphone", 5000);
-            products[1] = new Product("Samsung", 4000);
-            products[2] = new Product("Oneplus", 4000);
-            products[3] = new Product("Xiaomi", 3000);
-            products[4] = new Product("Oppo", 3000);
-            products[5] = new Product("Nokia", 4000);
+            products[0] = new Product("Iphone", 5000,20);
+            products[1] = new Product("Samsung", 4000,10);
+            products[2] = new Product("Oneplus", 4000,40);
+            products[3] = new Product("Xiaomi", 3000,20);
+            products[4] = new Product("Oppo", 3000,10);
+            products[5] = new Product("Nokia", 4000,15);
 
             Console.ResetColor();
 
             for (int i = 0; i < products.Length; i++)
             {
-                Console.WriteLine($"Product Name: {products[i].productName} {new string(' ', 10)} Product Price: ${products[i].productPrice}");
+                Console.WriteLine($"Product Name: {products[i].productName} {new string(' ', 10)} Product Price: ${products[i].productPrice} {new string(' ', 10)} Product Quantity: {products[i].productQuantity}");
             }
 
             List<SelectedProducts> selectedProducts = new List<SelectedProducts>();
@@ -44,10 +44,18 @@ namespace InvoiceAssignment
                 {
                     if (select?.ToLower().Equals(products[i].productName.ToLower()) == true)
                     {
+                        flag = 1;
                         Console.Write("Enter the quantity: ");
                         int quantity = Convert.ToInt32(Console.ReadLine());
-                        flag = 1;
-                        selectedProducts.Add(new SelectedProducts(products[i].productName, products[i].productPrice, quantity));
+                        if(quantity > products[i].productQuantity){
+                            Console.WriteLine("We don't have enough quantity of this product");
+                            Console.WriteLine();
+                        }
+                        else{
+                            Console.WriteLine();
+                            products[i].productQuantity = products[i].productQuantity - quantity;
+                            selectedProducts.Add(new SelectedProducts(products[i].productName, products[i].productPrice, quantity));
+                        }
                     }
                 }
 
@@ -69,11 +77,13 @@ namespace InvoiceAssignment
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Your product name is invalid, please correct it!!");
                     Console.ResetColor();
+                    Console.WriteLine();
                 }
             }
 
             if (selectedProducts.Count >= 1)
             {
+                Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("The Selected products are: ");
                 Console.ResetColor();
@@ -90,6 +100,7 @@ namespace InvoiceAssignment
 
             Console.WriteLine("Are you sure to buy these products? (yes/no): ");
             string buyEnsure = Console.ReadLine();
+            Console.WriteLine();
 
             if (buyEnsure?.ToLower().Equals("yes") == true){
                 System.Console.Write("Enter your first Name: ");
@@ -102,7 +113,7 @@ namespace InvoiceAssignment
                 string address = Console.ReadLine();
                 System.Console.Write("Enter your date of birth:(d-m-y) ");
                 string dob = Console.ReadLine();
-
+                Console.WriteLine();
                 System.Console.WriteLine("---------------- Here is your Invoice ----------------");
                 System.Console.WriteLine("*************** User Information: *****************");
                 System.Console.WriteLine($"Name: {firstName} {lastName} {new string(' ', 7)} Email: {email}");
@@ -124,6 +135,7 @@ namespace InvoiceAssignment
 
                 System.Console.Write("Do you want to receive the invoice via email? (yes/no): ");
                 string ensureEmail = Console.ReadLine();
+                Console.WriteLine();
                 
                 if(ensureEmail.ToLower().Equals("yes") == true){
                     System.Console.WriteLine("Your invoice has been sent to your email.");
@@ -150,11 +162,13 @@ namespace InvoiceAssignment
     {
         public string productName;
         public double productPrice;
+        public int productQuantity;
 
-        public Product(string productName, double productPrice)
+        public Product(string productName, double productPrice, int productQuantity)
         {
             this.productName = productName;
             this.productPrice = productPrice;
+            this.productQuantity = productQuantity;
         }
     }
 
