@@ -14,9 +14,33 @@ namespace InvoiceAssignment
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("(Team Debug)");
 
-            // **************** CREATING PRODUCT CLASS ARRAY ***************
+            // **************** CREATING PRODUCT CLASS ARRAY AND DISPLAY***************
 
             Product[] products = new Product[6];
+            DisplayProducts(products);
+
+            List<SelectedProducts> selectedProducts = new List<SelectedProducts>();
+
+            // ***************** CHOOSING PRODUCTS ******************
+            buyProducts(selectedProducts, products);
+            
+            
+
+            // **************** DISPLAYING SELECTED PRODUCT WHICH USER WANT TO BUY ***************
+
+            displaySelectedProducts(selectedProducts);
+            
+            Console.WriteLine();
+
+            //********************** TAKING INFORMATION FROM USER *******************
+            takingUserInfo(selectedProducts);
+            
+        }
+        
+        
+        // ******************** DISPLAYING PRODUCTS *******************
+        public static void DisplayProducts(Product[] products)
+        {
             products[0] = new Product("Iphone", 5000,20);
             products[1] = new Product("Samsung", 4000,10);
             products[2] = new Product("Oneplus", 4000,40);
@@ -24,15 +48,19 @@ namespace InvoiceAssignment
             products[4] = new Product("Oppo", 3000,10);
             products[5] = new Product("Nokia", 4000,15);
 
-            Console.ResetColor();
+            
 
             for (int i = 0; i < products.Length; i++)
             {
                 Console.WriteLine($"Product Name: {products[i].productName} {new string(' ', 10)} Product Price: ${products[i].productPrice} {new string(' ', 10)} Product Quantity: {products[i].productQuantity}");
             }
+            Console.ResetColor();
+        }
+        
+        
 
-            List<SelectedProducts> selectedProducts = new List<SelectedProducts>();
-
+        // ******************** BUY PRODUCTS *******************
+        public static void buyProducts(List<SelectedProducts> selectedProducts, Product[] products){
             while (true)
             {
                 Console.Write("Write the name of the product you want to buy (done to skip): ");
@@ -82,7 +110,12 @@ namespace InvoiceAssignment
                     Console.WriteLine();
                 }
             }
+        }
+        
+        
+        //********************** DISPLAYING SELECTED PRODUCTS *********************
 
+        public static void displaySelectedProducts(List<SelectedProducts> selectedProducts){
             if (selectedProducts.Count >= 1)
             {
                 Console.WriteLine();
@@ -95,11 +128,12 @@ namespace InvoiceAssignment
                     Console.WriteLine($"Product Name: {selectedProducts[i].productName} {new string(' ', 6)} Product Price: ${selectedProducts[i].productPrice} {new string(' ', 6)} Product Quantity: {selectedProducts[i].productQuantity}");
                 }
             }
-
-            Console.WriteLine();
-
-            // Console.WriteLine();
-
+        }
+        
+        
+        // ************************* TAKE INFORMATION FROM USER *********************
+        
+        public static void takingUserInfo(List<SelectedProducts> selectedProducts){
             Console.Write("Are you sure to buy these products? (yes/no): ");
             string buyEnsure = Console.ReadLine();
             Console.WriteLine();
@@ -185,11 +219,8 @@ namespace InvoiceAssignment
             {
                 Console.WriteLine("Thank you for your response");
             }
-
-                
-
-            
         }
+        
     }
 
     class Product
