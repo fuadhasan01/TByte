@@ -28,12 +28,17 @@ namespace InvoiceAssignment
 
             // **************** DISPLAYING SELECTED PRODUCT WHICH USER WANT TO BUY ***************
 
-            displaySelectedProducts(selectedProducts);
+            if(selectedProducts.Count > 0){
+                displaySelectedProducts(selectedProducts);
+            }
             
             Console.WriteLine();
 
             //********************** TAKING INFORMATION FROM USER *******************
-            takingUserInfo(selectedProducts);
+            if(selectedProducts.Count > 0){
+                takingUserInfo(selectedProducts);
+            }
+            
             
         }
         
